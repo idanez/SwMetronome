@@ -1,6 +1,8 @@
 package br.com.dmy.metronome;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.sound.midi.MidiUnavailableException;
 
@@ -30,19 +32,32 @@ public class MetronomeTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testSimplyPlayAndStopMetronome() {
-		Metronome metronome;
+	private Metronome getNewMetronome() {
+		Metronome metronome = null;
 		try {
 			metronome = new Metronome();
-			metronome.play(60);
-			assertTrue(metronome.isPlaying());
-			metronome.stop();
-			assertFalse(metronome.isPlaying());
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}		
+		}
+		return metronome;
+	}
+
+	@Test
+	public void testSimplyPlayAndStopMetronome() {
+		Metronome metronome = getNewMetronome();
+		metronome.play();
+		assertTrue(metronome.isPlaying());
+		metronome.stop();
+		assertFalse(metronome.isPlaying());
+	}
+
+	public void testDefineBpmAndPlay() {
+		Metronome metronome = getNewMetronome();
+		metronome.setBeatsPerMinute(60);
+		metronome.play();
+		assertTrue(metronome.isPlaying());
+		metronome.stop();
 	}
 
 }

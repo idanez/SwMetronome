@@ -9,7 +9,7 @@ public class Metronome {
 
 	private Synthesizer synthesizer;
 	private MidiChannel channel = null;
-	private int beatsPerMinute;
+	private int beatsPerMinute = 120;
 	private int note;
 	private boolean keepPlaying;
 	private final int velocity = 127;
@@ -37,12 +37,11 @@ public class Metronome {
 		channel = synthesizer.getChannels()[0]; // Get only the channel 0
 	}
 
-	public void play(int beatsPerMinute) {
-		this.beatsPerMinute = beatsPerMinute;			
+	public void play() {
 		startMetronome();
 	}
-	
-	public boolean isPlaying() {		
+
+	public boolean isPlaying() {
 		return keepPlaying;
 	}
 
@@ -63,7 +62,7 @@ public class Metronome {
 			thread.start();
 		}
 	}
-	
+
 	private void calculateTimeBetweetBeats() {
 		timeBetweenBeats = 1000 * 60 / beatsPerMinute;
 	}
@@ -82,8 +81,9 @@ public class Metronome {
 	private Runnable createRunnable() {
 		return new Runnable() {
 			long wokeLateOrEarlyBy = 0;
+
 			@Override
-			public void run() {				
+			public void run() {
 				while (keepPlaying) {
 					// Someone could change note while we sleep. Make sure we
 					// turn on and off the same note.
@@ -101,13 +101,13 @@ public class Metronome {
 				}
 			}
 
-			private long calculateSleepTime(long wokeLateOrEarlyBy) {
+			private long calculateSleepTime(final long wokeLateOrEarlyBy) {
 				return timeBetweenBeats - wokeLateOrEarlyBy;
 			}
 
-			private long calculateExpectedWakeTime(long sleepTime) {
+			private long calculateExpectedWakeTime(final long sleepTime) {
 				final long currentTimeBeforeSleep = System.currentTimeMillis();
-				// correct time to sleep by previous error, to keep the overall tempo				
+				// correct time to sleep by previous error, to keep the overall tempo
 				final long expectedWakeTime = currentTimeBeforeSleep + sleepTime;
 				return expectedWakeTime;
 			}
@@ -115,5 +115,12 @@ public class Metronome {
 		};
 	}
 
+	public int getBeatsPerMinute() {
+		return beatsPerMinute;
+	}
+
+	public void setBeatsPerMinute(final int beatsPerMinute) {
+		this.beatsPerMinute = beatsPerMinute;
+	}
 
 }
