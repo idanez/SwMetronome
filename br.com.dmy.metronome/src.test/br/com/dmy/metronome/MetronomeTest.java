@@ -52,12 +52,46 @@ public class MetronomeTest {
 		assertFalse(metronome.isPlaying());
 	}
 
+	@Test
 	public void testDefineBpmAndPlay() {
 		Metronome metronome = getNewMetronome();
 		metronome.setBeatsPerMinute(60);
 		metronome.play();
 		assertTrue(metronome.isPlaying());
 		metronome.stop();
+	}
+
+	@Test
+	public void testDefineBpmAndChangeItWhilePlaying() {
+		Metronome metronome = getNewMetronome();
+		metronome.setBeatsPerMinute(60);
+		metronome.play();
+		assertTrue(metronome.isPlaying());
+		metronome.setBeatsPerMinute(120);
+		assertTrue(metronome.isPlaying());
+		metronome.stop();
+		assertFalse(metronome.isPlaying());
+	}
+
+	@Test
+	public void testBpmWithReallyHighValue() {
+		Metronome metronome = getNewMetronome();
+		metronome.setBeatsPerMinute(6000);
+		metronome.play();
+		assertTrue(metronome.isPlaying());
+		metronome.stop();
+		assertFalse(metronome.isPlaying());
+	}
+
+	@Test
+	public void testSetVolumeValue() {
+		Metronome metronome = getNewMetronome();
+		metronome.setLowBeatVolume(60);
+		metronome.setHighBeatVolume(70);
+		metronome.play();
+		assertTrue(metronome.isPlaying());
+		metronome.stop();
+		assertFalse(metronome.isPlaying());
 	}
 
 }

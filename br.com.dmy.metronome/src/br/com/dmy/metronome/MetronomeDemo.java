@@ -68,6 +68,7 @@ public class MetronomeDemo extends JPanel {
 	private JLabel lblPitchbend;
 	private JSlider sliderPitchBend;
 	private JLabel lblPitchbendvalue;
+	protected Instrument instrument;
 
 	public static void main(final String[] args) {
 		JFrame f = new JFrame("DBSchools Metronome");
@@ -86,12 +87,14 @@ public class MetronomeDemo extends JPanel {
 			synthesizer = MidiSystem.getSynthesizer();
 			synthesizer.open();
 			channel = synthesizer.getChannels()[9];
+			instrument = synthesizer.getLoadedInstruments()[9];
 		} catch (MidiUnavailableException ex) {
 			log.error(ex);
 		}
 		initComponents();
-		setTempo(108);
+		setTempo(120);
 		setNoteFromChoice();
+		note = 37;
 		metronomeButton.requestFocus();
 	}
 
@@ -327,7 +330,7 @@ public class MetronomeDemo extends JPanel {
 
 		tempoChooser.setMaximum(208);
 		tempoChooser.setMinimum(40);
-		tempoChooser.setValue(108);
+		tempoChooser.setValue(120);
 		tempoChooser.addChangeListener(new javax.swing.event.ChangeListener() {
 			@Override
 			public void stateChanged(final javax.swing.event.ChangeEvent evt) {
@@ -411,7 +414,7 @@ public class MetronomeDemo extends JPanel {
 			public void stateChanged(final javax.swing.event.ChangeEvent evt) {
 				final int inst = sliderInst.getValue();
 				lblInstValue.setText(String.valueOf(inst));
-				Instrument instrument = synthesizer.getLoadedInstruments()[inst];
+				instrument = synthesizer.getLoadedInstruments()[inst];
 				channel.programChange(instrument.getPatch().getProgram());
 			}
 		});

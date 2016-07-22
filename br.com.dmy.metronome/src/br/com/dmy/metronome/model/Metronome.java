@@ -16,6 +16,8 @@ public class Metronome {
 	private long timeBetweenBeats;
 	private Thread thread;
 	private final Runnable runnable;
+	private int lowBeatVolume;
+	private int highBeatVolume;
 
 	/*
 	 * Functionalities:
@@ -24,7 +26,7 @@ public class Metronome {
 	 * 3 - Define the instrument and be able to change it while playing
 	 * 4 - Define the velocity and be able to change it while playing
 	 * 5 - Define the tempo and be able to change it while playing
-	 * 6 - Define the bpm and be able to change it while playing
+	 * 6 - Define the bpm and be able to change it while playing - tested
 	 * 7 - Check if it is playing
 	 * 8 - Send on message each pulse
 	 * 9 - Set a timer to automatically stop the metronome
@@ -121,6 +123,28 @@ public class Metronome {
 
 	public void setBeatsPerMinute(final int beatsPerMinute) {
 		this.beatsPerMinute = beatsPerMinute;
+	}
+
+	/**
+	 * The volume values can go from 0 (turned of) to 127 (max volume)<br>
+	 * Case a value greater then 127 is passed, it defaults to 127.
+	 * 
+	 * @param lowBeatVolume
+	 *            - The low beat volume level
+	 */
+	public void setLowBeatVolume(final int lowBeatVolume) {
+		this.lowBeatVolume = lowBeatVolume > 127 ? 127 : lowBeatVolume;
+	}
+
+	/**
+	 * The volume values can go from 0 (turned of) to 127 (max volume)<br>
+	 * Case a value greater then 127 is passed, it defaults to 127.
+	 * 
+	 * @param highBeatVolume
+	 *            - The high beat volume level
+	 */
+	public void setHighBeatVolume(final int highBeatVolume) {
+		this.highBeatVolume = highBeatVolume > 127 ? 127 : highBeatVolume;
 	}
 
 }
